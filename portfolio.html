@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NIKKOS — Portfolio</title>
+  <meta name="description" content="Portfolio Nikkos — Monteur vidéo. Vidéos longues, shorts, motion design." />
+
+  <style>
+    /* Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@700;900&display=swap');
+
+    /* Palette */
+    :root{
+      --bg:#000000;
+      --card:#070708;
+      --gold:#e7ca3a;
+      --gold-600:#d4b22f;
+      --muted: rgba(231,202,58,0.18);
+      --glass: rgba(255,255,255,0.02);
+      --accent-grad: linear-gradient(90deg,var(--gold),var(--gold-600));
+      --max-width:1200px;
+      --fw-slab: 'Playfair Display', Georgia, serif;
+      --fw-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:#ddd;
+      font-family:var(--fw-sans);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
+      overflow-x:hidden;
+      scroll-behavior:smooth;
+    }
+
+    /* layered backgrounds for depth */
+    .bg-stars{position:fixed;inset:0;pointer-events:none; z-index:0;background-image: radial-gradient(var(--muted) 1px, transparent 1px);background-size: 40px 40px;opacity:0.6;mix-blend-mode: screen;filter: blur(0.2px) saturate(120%)}
+    .radial-layer{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 20% 10%, rgba(231,202,58,0.03) 0%, transparent 8%, transparent 100%), radial-gradient(ellipse at 80% 85%, rgba(231,202,58,0.02) 0%, transparent 10%);opacity:0.7}
+
+    header{position:fixed;top:0;left:0;right:0; z-index:50;display:flex;align-items:center;justify-content:center;padding:12px 28px;/* soft frosted glass with vertical blur gradient */
+      background: linear-gradient(to bottom, rgba(0,0,0,0.06), rgba(0,0,0,0.10));
+      /* apply a stronger backdrop blur but mask it so blur fades toward the bottom of the header */
+      backdrop-filter: blur(22px) saturate(120%);
+      -webkit-backdrop-filter: blur(22px) saturate(120%);
+      /* mask so the backdrop-filter is fully applied at the top and fades to transparent at the bottom */
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 45%, rgba(0,0,0,0) 100%);
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 45%, rgba(0,0,0,0) 100%);
+      border-bottom:1px solid rgba(255,255,255,0.02);box-shadow:0 6px 18px rgba(0,0,0,0.45)}
+    .nav-inner{width:100%;max-width:var(--max-width);display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{color:var(--gold);font-family:var(--fw-slab);font-weight:700;letter-spacing:3px;font-size:13px}
+
+    nav a{color:#bbb;text-decoration:none;padding:8px 12px;border-radius:22px;border:1px solid transparent;font-weight:600;font-size:13px}
+    nav a:hover{color:var(--gold);border-color:rgba(231,202,58,0.06);box-shadow:0 8px 30px rgba(231,202,58,0.04)}
+
+    /* Page container with scroll-snap for premium feel */
+    .page{scroll-snap-type:y mandatory}
+    section{scroll-snap-align:start}
+
+    /* Hero */
+    .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:100px 24px 80px;position:relative;z-index:10}
+    .hero h1{font-family:var(--fw-slab);font-weight:900;font-size:clamp(48px,9vw,120px);margin:0;line-height:0.9;position:relative;z-index:12; /* brushed gold gradient + deep glow */
+      background: linear-gradient(120deg, #fff9e6 0%, #ffd86b 28%, var(--gold) 56%, #fff6e0 100%);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 6px 18px rgba(231,202,58,0.08), 0 12px 40px rgba(231,180,40,0.06);
+      animation: nk-gradient 8s ease-in-out infinite;}
+
+    @keyframes nk-gradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+    /* soft deep glow behind the title */
+    .hero h1::after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:160%;height:90%;background:radial-gradient(circle at center, rgba(231,202,58,0.18), rgba(231,202,58,0.09) 18%, rgba(255,244,200,0.04) 40%, transparent 55%);filter:blur(36px);z-index:-1;pointer-events:none;animation: nk-glow 6s ease-in-out infinite}
+
+    @keyframes nk-glow{0%{transform:translate(-50%,-50%) scale(1);opacity:0.85}50%{transform:translate(-50%,-50%) scale(1.02);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:0.85}}
+
+    .hero .cta-row{display:flex;gap:14px;margin-top:26px;align-items:center;flex-wrap:wrap}
+    .btn{position:relative;z-index:0;display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:9999px;font-weight:700;border:0;cursor:pointer;text-decoration:none; /* richer yet subtle layered gradient for premium gold */
+      background-image: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04)), linear-gradient(90deg, #ffecb3, var(--gold), var(--gold-600));
+      background-blend-mode: overlay; background-size: 100% 100%, 140% 100%; background-position: center, 0% 50%;
+      color:#0b0b0b; box-shadow:0 10px 34px rgba(215,170,52,0.14), inset 0 -4px 12px rgba(0,0,0,0.22); transition:transform .28s ease,box-shadow .28s ease, background-position .6s ease; } 
+
+    /* simple, non-blurry hover: only a thin gold outline, no gradient fill changes */
+    .btn:hover{transform:translateY(-4px);box-shadow:0 18px 50px rgba(215,170,52,0.18);} 
+
+    /* subtle inner frame to keep structure */
+    
+
+    .btn-primary{background:var(--accent-grad);color:#0b0b0b}
+    .btn-ghost{background:var(--accent-grad);color:#0b0b0b;border:0}
+
+    main{position:relative;z-index:5;}
+
+    /* Sections */
+    section{padding:82px 20px;max-width:var(--max-width);margin:0 auto}
+    section h2{color:#e8dca1;font-family:var(--fw-slab);letter-spacing:2px;font-size:20px;margin:4px 0 14px;display:flex;align-items:center;gap:12px}
+    .hline{height:2px;width:56px;background:var(--accent-grad);border-radius:99px}
+
+    /* Vertical single column list (longs & motion designs) */
+    .stack{display:flex;flex-direction:column;gap:36px}
+
+    .card{position:relative;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:8px;border:1px solid rgba(231,202,58,0.06);backdrop-filter: blur(6px);overflow:hidden;transition:transform 350ms cubic-bezier(.2,.9,.26,1),box-shadow 350ms}
+    .card::after{content:'';position:absolute;inset:0;border-radius:14px;box-shadow:inset 0 0 0 1px rgba(231,202,58,0.02) ;pointer-events:none}
+
+    /* Responsive iframe wrapper for 16:9 and 9:16 */
+    .video-wrap{position:relative;width:100%;overflow:hidden;border-radius:10px;background:#000}
+    .thumb{display:block;position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;transition:transform 450ms ease,filter 400ms ease}
+    .video-16by9{padding-top:56.25%}
+    .video-9by16{padding-top:177.78%}
+    .video-wrap iframe, .video-wrap img{position:absolute;left:0;top:0;width:100%;height:100%;border:0}
+
+    /* thumbnail overlay - subtle gold gradient and labels */
+    .thumb-overlay{position:absolute;left:0;right:0;bottom:0;padding:12px 14px;background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 40%, rgba(231,202,58,0.07) 100%);display:flex;justify-content:space-between;align-items:center}
+    .meta-left{display:flex;flex-direction:column;align-items:flex-start}
+    .meta-client{font-weight:700;color:var(--gold);font-size:13px}
+    .meta-sub{color:#d1caa0;font-size:12px}
+
+    .duration{background:rgba(0,0,0,0.45);padding:6px 8px;border-radius:8px;font-weight:700;color:#fff;font-size:12px}
+
+    /* Play button */
+    .play-btn{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(1);border:0;padding:14px 18px;border-radius:999px;background:transparent;color:var(--gold);font-weight:800;cursor:pointer;transition:transform 220ms cubic-bezier(.2,.9,.26,1),box-shadow 220ms}
+    .play-btn::before{content:'▶';display:inline-block;font-size:18px;margin-right:6px}
+    .video-wrap:hover .play-btn{transform:translate(-50%,-50%) scale(1.08);box-shadow:0 18px 40px rgba(231,202,58,0.12);}
+
+    /* hover preview micro-effect */
+    .video-wrap:hover .thumb{transform:scale(1.03)}
+    .video-wrap:hover .thumb-overlay{opacity:1;transform:translateY(0)}
+
+    /* Shorts grid */
+    .shorts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+
+    /* Motion designs grid: allow max 2 per row on wide screens */
+    .motion-grid{display:grid;grid-template-columns:repeat(1,1fr);gap:20px}
+    @media(min-width:980px){.motion-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:980px){.shorts-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.shorts-grid{grid-template-columns:repeat(1,1fr)}header{padding:10px 14px}.nav-inner{padding:0 6px}nav a{display:none}}
+
+    /* Footer / contact */
+    footer{padding:48px 20px 120px;color:#cfc6a3}
+    .contact-box{display:flex;flex-direction:column;gap:8px;align-items:center}
+    .contact-box a{color:var(--gold);font-weight:700}
+
+    /* Reveal animations */
+    .reveal{opacity:0;transform:translateY(34px) rotateX(6deg) scale(0.995);filter:blur(6px);transition:transform 900ms cubic-bezier(.16,.9,.24,1),opacity 700ms ease,filter 700ms ease}
+    .reveal.visible{opacity:1;transform:translateY(0) rotateX(0) scale(1);filter:blur(0)}
+
+    /* Slight hover lift */
+    .card:hover{transform:translateY(-10px) scale(1.002);box-shadow:0 30px 70px rgba(0,0,0,0.6)}
+
+    /* Tiny helpers */
+    .muted{color:#bdb7a6;font-size:14px}
+    .section-meta{display:flex;justify-content:space-between;align-items:center}
+
+    /* subtle divider */
+    .divider{height:1px;background:linear-gradient(90deg,transparent,#2d2a1b,transparent);margin:32px 0}
+
+    /* progress indicator (right) */
+    .progress-wrap{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:60}
+    .progress{width:4px;height:220px;background:rgba(255,255,255,0.04);border-radius:10px;overflow:hidden}
+    .progress > i{display:block;height:0%;width:100%;background:linear-gradient(180deg,var(--gold),var(--gold-600));border-radius:10px;transition:height 220ms linear}
+
+    /* Embers canvas (gold dust) */
+    .embers{position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:screen;filter:blur(0.2px) saturate(110%);opacity:0.95}
+    @media (prefers-reduced-motion: reduce){.embers{display:none}}
+
+  </style>
+</head>
+<body>
+
+  <div class="bg-stars" aria-hidden="true"></div>
+  <div class="radial-layer" aria-hidden="true"></div>
+  <canvas class="embers" aria-hidden="true"></canvas>
+
+  <header>
+    <div class="nav-inner">
+      <div class="brand" aria-hidden="true">NIKKOS</div>
+      <nav aria-label="Navigation principale">
+        <a href="#long-videos">Vidéos longues</a>
+        <a href="#shorts">Shorts</a>
+        <a href="#motion-designs">Motion Design</a>
+        <a href="#contact">Me contacter</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="progress-wrap" aria-hidden="true">
+    <div class="progress"><i></i></div>
+  </div>
+
+  <main class="page">
+    <section class="hero">
+      <h1>NIKKOS</h1>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#long-videos">Vidéos longues</a>
+        <a class="btn btn-ghost" href="#shorts">Shorts</a>
+        <a class="btn btn-ghost" href="#motion-designs">Motion Design</a>
+        <a class="btn btn-ghost" href="#contact">Me contacter</a>
+      </div>
+
+    </section>
+
+    <!-- Long videos: vertical single column stack -->
+    <section id="long-videos" aria-labelledby="lv-title">
+      <h2 id="lv-title"><span class="hline"></span> Vidéos longues</h2>
+
+      <div class="stack" id="longStack">
+
+        <!-- Placeholder long video slot (kept as-is) -->
+        <article class="card reveal" data-idx="2">
+          <div class="video-wrap video-16by9" data-video="https://www.youtube.com/embed/MznosFR7Gx8?rel=0&showinfo=0" aria-label="Vidéo 1">
+            <img class="thumb" alt="Vignette — Le Problème Du Manque d\'Attention - Michael Scott (analyse)" src="https://img.youtube.com/vi/MznosFR7Gx8/maxresdefault.jpg" loading="lazy">
+            <div class="thumb-overlay" aria-hidden="true"><div class="meta-left"><div class="meta-client">Le Problème Du Manque d'Attention - Michael Scott (analyse)</div><div class="meta-sub">Laganne</div></div><div class="duration">dev perso / psychologie</div></div>
+            <button class="play-btn" aria-hidden="true"></button>
+          </div>
+        </article>
+
+        <!-- New placeholder 1 -->
+        <article class="card reveal" data-idx="3">
+          <div class="video-wrap video-16by9" data-video="https://www.youtube.com/embed/L4ZhnPP95zQ?rel=0&showinfo=0" aria-label="Vidéo 2">
+            <img class="thumb" alt="Vignette — POURQUOI les Athlètes Hybrides ont des PHYSIQUES de DOPÉS ?" src="https://img.youtube.com/vi/L4ZhnPP95zQ/maxresdefault.jpg" loading="lazy">
+            <div class="thumb-overlay" aria-hidden="true"><div class="meta-left"><div class="meta-client">POURQUOI les Athlètes Hybrides ont des PHYSIQUES de DOPÉS ?</div><div class="meta-sub">Ananas Musclé</div></div><div class="duration">vlog</div></div>
+            <button class="play-btn" aria-hidden="true"></button>
+          </div>
+        </article>
+
+        <!-- New placeholder 2 -->
+        <article class="card reveal" data-idx="4">
+          <div class="video-wrap video-16by9" data-video="https://www.youtube.com/embed/BTwhGxHE_X8?rel=0&showinfo=0" aria-label="Vidéo 3">
+            <img class="thumb" alt="Vignette — Devoir en Anglais ( j'ai eu 20/20 ) (voix nulle)" src="https://img.youtube.com/vi/BTwhGxHE_X8/maxresdefault.jpg" loading="lazy">
+            <div class="thumb-overlay" aria-hidden="true"><div class="meta-left"><div class="meta-client">Devoir en Anglais ( j'ai eu 20/20 ) (voix nulle)</div><div class="meta-sub">Moi</div></div><div class="duration">Autre</div></div>
+            <button class="play-btn" aria-hidden="true"></button>
+          </div>
+        </article>
+
+        <!-- New placeholder added by request: additional long video slot -->
+        <article class="card reveal" data-idx="5">
+          <div class="video-wrap video-16by9" data-video="https://www.youtube.com/embed/5PI7W0dYS2E?rel=0&showinfo=0" aria-label="Vidéo 4">
+            <img class="thumb" alt="Vignette — Test pour Laganne" src="https://img.youtube.com/vi/5PI7W0dYS2E/maxresdefault.jpg" loading="lazy">
+            <div class="thumb-overlay" aria-hidden="true"><div class="meta-left"><div class="meta-client">Test pour Laganne</div><div class="meta-sub">Laganne</div></div><div class="duration">test</div></div>
+            <button class="play-btn" aria-hidden="true"></button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Shorts (moved here between Longs and Motion) -->
+    <section id="shorts" aria-labelledby="s-title">
+      <h2 id="s-title"><span class="hline"></span> Shorts</h2>
+
+      <div class="shorts-grid" id="shortGrid">
+
+        <article class="card reveal" data-idx="0">
+          <div class="video-wrap video-9by16" data-video="https://www.youtube.com/embed/A0K_QxVa36Q?rel=0&showinfo=0">
+            <img class="thumb" alt="Short - Pourquoi Vous ne Verrez JAMAIS d'Étoiles Vertes (vieux short)" src="https://img.youtube.com/vi/A0K_QxVa36Q/maxresdefault.jpg" loading="lazy">
+            <div class="thumb-overlay" aria-hidden="true"><div class="meta-left"><div class="meta-client">Pourquoi Vous ne Verrez JAMAIS d'Étoiles Vertes (vieux short)</div><div class="meta-sub">Année 2024</div></div></div>
+            <button class="play-btn" aria-hidden="true"></button>
+          </div>
+        </article>
+
+        <!-- E2ouard - Test (moved from Vidéos longues) -->
+        <article class="card reveal" data-idx="1">
+          <div class="video-wrap video-9by16" data-video="https://www.youtube.com/embed/YXEXcWef8a8?rel=0&showinfo=0">
+            <img class="thumb" alt="Short - E2ouard - Test" src="https://img.youtube.com/vi/YXEXcWef8a8/maxresdefault.jpg" loading="lazy">
+            <div class="thumb-overlay" aria-hidden="true"><div class="meta-left"><div class="meta-client">E2ouard - Test</div><div class="meta-sub">Année 2025</div></div></div>
+            <button class="play-btn" aria-hidden="true"></button>
+          </div>
+        </article>
+
+        <article class="card reveal" data-idx="2">
+          <div class="video-wrap video-9by16" data-video="https://www.youtube.com/embed/SHORT_ID_2?rel=0&showinfo=0">
+            <img class="thumb" alt="Short 2" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='1600'><rect width='100%' height='100%' fill='%23000000'/></svg>" loading="lazy">
+            <div class="thumb-overlay" aria-hidden="true"><div class="meta-left"><div class="meta-client">Short</div><div class="meta-sub">0:28</div></div></div>
+            <button class="play-btn" aria-hidden="true"></button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <!-- Motion designs: title singular -->
+    <section id="motion-designs" aria-labelledby="m-title">
+      <h2 id="m-title"><span class="hline"></span> Motion Design</h2>
+
+      <div class="motion-grid" id="motionGrid">
+
+        <article class="card reveal" data-idx="0">
+          <div class="video-wrap video-16by9" data-video="https://www.youtube.com/embed/MOTION_ID_1?rel=0&showinfo=0" aria-label="Motion 1">
+            <img class="thumb" alt="Motion 1" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'><rect width='100%' height='100%' fill='%23000000'/></svg>" loading="lazy">
+            <div class="thumb-overlay" aria-hidden="true"><div class="meta-left"><div class="meta-client">Motion</div><div class="meta-sub">Teaser</div></div><div class="duration">0:01:20</div></div>
+            <button class="play-btn" aria-hidden="true"></button>
+          </div>
+        </article>
+
+        <article class="card reveal" data-idx="1">
+          <div class="video-wrap video-16by9" data-video="https://www.youtube.com/embed/vo5OSFk6bx8?rel=0&showinfo=0" aria-label="Motion 2">
+            <img class="thumb" alt="Motion 2" src="https://img.youtube.com/vi/vo5OSFk6bx8/maxresdefault.jpg" loading="lazy">
+            <div class="thumb-overlay" aria-hidden="true"><div class="meta-left"><div class="meta-client">Motion</div><div class="meta-sub">Etude</div></div><div class="duration">0:02:14</div></div>
+            <button class="play-btn" aria-hidden="true"></button>
+          </div>
+        </article>
+
+        <!-- New additional motion design slots -->
+        <article class="card reveal" data-idx="2">
+          <div class="video-wrap video-16by9" data-video="https://www.youtube.com/embed/jCN-0To3y6U?rel=0&showinfo=0" aria-label="Motion 3">
+            <img class="thumb" alt="Motion 3" src="https://img.youtube.com/vi/jCN-0To3y6U/maxresdefault.jpg" loading="lazy">
+            <div class="thumb-overlay" aria-hidden="true"><div class="meta-left"><div class="meta-client">Motion</div><div class="meta-sub">Preview</div></div><div class="duration">0:00:45</div></div>
+            <button class="play-btn" aria-hidden="true"></button>
+          </div>
+        </article>
+
+        <article class="card reveal" data-idx="3">
+          <div class="video-wrap video-16by9" data-video="https://www.youtube.com/embed/WIuiPKUgF_4?rel=0&showinfo=0" aria-label="Motion 4">
+            <img class="thumb" alt="Motion 4" src="https://img.youtube.com/vi/WIuiPKUgF_4/maxresdefault.jpg" loading="lazy">
+            <div class="thumb-overlay" aria-hidden="true"><div class="meta-left"><div class="meta-client">Motion</div><div class="meta-sub">Etude</div></div><div class="duration">0:01:10</div></div>
+            <button class="play-btn" aria-hidden="true"></button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <footer id="contact">
+      <section aria-labelledby="c-title">
+        <h2 id="c-title"><span class="hline"></span> Me contacter</h2>
+        <div class="contact-box">
+          <div class="muted">Email</div>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nikkos189.pro@gmail.com" target="_blank" rel="noopener noreferrer" title="Ouvrir Gmail — composer un message">nikkos189.pro@gmail.com</a>
+          <div class="muted" style="margin-top:8px">Discord</div>
+          <a href="#" id="discord-link" data-username="nikkos_189" title="Cliquer pour copier le pseudo et ouvrir Discord">nikkos_189</a>
+        </div>
+      </section>
+
+      <!-- toast for copy feedback -->
+      <div id="nk-toast" aria-hidden="true" style="position:fixed;right:18px;bottom:18px;padding:12px 16px;background:rgba(0,0,0,0.7);color:#fff;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.6);opacity:0;transform:translateY(12px);transition:opacity .28s ease,transform .28s ease;z-index:120"></div>
+    </footer>
+
+  </main>
+
+  <script>
+    /* Smooth reveal on scroll with refined stagger */
+    (function(){
+      const reveals = Array.from(document.querySelectorAll('.reveal'));
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            const el = entry.target;
+            const idx = Number(el.dataset.idx || 0);
+            setTimeout(()=> el.classList.add('visible'), idx * 120);
+            io.unobserve(el);
+          }
+        })
+      },{threshold:0.12});
+      reveals.forEach((r,i)=>{ if(!r.dataset.idx) r.dataset.idx = i; io.observe(r)});
+
+      // Lazy load iframe on click of play button (keeps initial load light)
+      document.querySelectorAll('.video-wrap').forEach(wrap=>{
+        const btn = wrap.querySelector('.play-btn');
+        btn && btn.addEventListener('click', ()=>{
+          const src = wrap.dataset.video;
+          if(!src) return;
+          const ifr = document.createElement('iframe');
+          ifr.setAttribute('allowfullscreen','');
+          ifr.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+          ifr.src = src + (src.includes('?')? '&autoplay=1' : '?autoplay=1');
+          wrap.innerHTML = '';
+          wrap.appendChild(ifr);
+        })
+      });
+
+      // small parallax of stars on mouse move
+      const bg = document.querySelector('.bg-stars');
+      let raf=0;
+      document.addEventListener('mousemove', (e)=>{
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(()=>{
+          const x = (e.clientX / window.innerWidth) * 30;
+          const y = (e.clientY / window.innerHeight) * 30;
+          bg.style.transform = `translate(${x}px, ${y}px)`;
+        })
+      })
+
+      // reveal all on keyboard Tab for accessibility
+      document.addEventListener('keyup', (e)=>{ if(e.key === 'Tab'){ document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible')); }});
+
+    })();
+  </script>
+
+  <script>
+    // Golden dust canvas (restored richer look) - particles across whole page, subtle
+    (function(){
+      const canvas = document.querySelector('.embers');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let DPR = window.devicePixelRatio || 1;
+      function resize(){ DPR = window.devicePixelRatio || 1; canvas.width = window.innerWidth * DPR; canvas.height = window.innerHeight * DPR; canvas.style.width = window.innerWidth + 'px'; canvas.style.height = window.innerHeight + 'px'; ctx.setTransform(DPR,0,0,DPR,0,0); }
+      window.addEventListener('resize', resize); resize();
+      if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const NUM = Math.max(80, Math.min(220, Math.floor(window.innerWidth / 4)));
+      const particles = [];
+      function spawn(){ const x = Math.random() * canvas.width / DPR; const y = Math.random() * canvas.height / DPR; const size = 0.6 + Math.random() * 3.0; const vx = (Math.random() - 0.5) * 0.6; const vy = (Math.random() - 0.5) * 0.6; const alpha = 0.12 + Math.random() * 0.7; const life = 300 + Math.random() * 500; const phase = Math.random() * Math.PI * 2; return {x,y,size,vx,vy,alpha,life,age:Math.floor(Math.random()*life),phase}; }
+      for(let i=0;i<NUM;i++) particles.push(spawn());
+      let t = 0;
+      function step(){ ctx.clearRect(0,0,canvas.width,canvas.height); ctx.globalCompositeOperation = 'lighter'; for(let p of particles){ p.age += 1; p.x += p.vx + Math.sin(p.phase + (t + p.age) * 0.002) * 0.15; p.y += p.vy + Math.cos(p.phase + (t + p.age) * 0.0015) * 0.12; const tw = 0.7 + Math.sin((t + p.age) * 0.02 + p.phase) * 0.25; const lifeRatio = Math.max(0, 1 - p.age / p.life); const a = Math.max(0.02, Math.min(1, p.alpha * lifeRatio * tw)); const gx = p.x; const gy = p.y; const gradSize = 2 + p.size * 5; const g = ctx.createRadialGradient(gx, gy, 0, gx, gy, gradSize); g.addColorStop(0, `rgba(255,245,200, ${0.95 * a})`); g.addColorStop(0.25, `rgba(231,202,58, ${0.6 * a})`); g.addColorStop(0.85, `rgba(120,80,30, ${0.12 * a})`); g.addColorStop(1, `rgba(0,0,0,0)`); ctx.fillStyle = g; ctx.fillRect(gx - gradSize, gy - gradSize, gradSize*2, gradSize*2); ctx.beginPath(); ctx.globalAlpha = a; ctx.fillStyle = 'rgba(255,245,200,0.95)'; ctx.arc(gx, gy, Math.max(0.6, p.size * 0.35), 0, Math.PI*2); ctx.fill(); ctx.globalAlpha = 1; if(p.age > p.life || p.x < -50 || p.x > canvas.width/DPR + 50 || p.y < -50 || p.y > canvas.height/DPR + 50){ Object.assign(p, spawn()); } } t += 1; requestAnimationFrame(step); }
+      requestAnimationFrame(step);
+      let lastMx = 0, lastMy = 0; document.addEventListener('mousemove', (e)=>{ const mx = (e.clientX / window.innerWidth - 0.5) * 10; const my = (e.clientY / window.innerHeight - 0.5) * 8; lastMx += (mx - lastMx) * 0.08; lastMy += (my - lastMy) * 0.08; canvas.style.transform = `translate(${lastMx}px, ${lastMy}px)`; });
+    })();
+  </script>
+
+  <script>
+    // Intercept anchor clicks and perform native smooth scroll (no blur)
+    (function(){
+      document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', function(e){
+          const href = this.getAttribute('href');
+          if(!href || href === '#') return;
+          const target = document.querySelector(href);
+          if(target){
+            e.preventDefault();
+            target.scrollIntoView({behavior:'smooth'});
+            // update URL without jumping
+            history.replaceState(null, '', href);
+            try{ target.focus({preventScroll:true}); }catch(e){}
+          }
+        })
+      });
+    })();
+  </script>
+
+  <script>
+    // Progress indicator update
+    (function(){
+      const prog = document.querySelector('.progress > i');
+      if(!prog) return;
+      function update(){
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = h ? (window.scrollY / h) : 0;
+        prog.style.height = Math.max(4, Math.round(pct*100)) + '%';
+      }
+      window.addEventListener('scroll', update); window.addEventListener('resize', update); update();
+    })();
+  </script>
+
+  <script>
+    // Discord link: copy username and open Discord web (best-effort)
+    (function(){
+      const link = document.getElementById('discord-link');
+      const toast = document.getElementById('nk-toast');
+      if(!link) return;
+      function showToast(msg){
+        toast.textContent = msg;
+        toast.setAttribute('aria-hidden','false');
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+        clearTimeout(window._nk_toast_timeout);
+        window._nk_toast_timeout = setTimeout(()=>{ toast.style.opacity='0'; toast.style.transform='translateY(12px)'; toast.setAttribute('aria-hidden','true'); }, 3000);
+      }
+
+      link.addEventListener('click', function(e){
+        e.preventDefault();
+        const username = this.dataset.username || 'nikkos_189';
+
+        // Try to copy to clipboard
+        function openDiscordWeb(){
+          // open Discord web in a new tab to the user's DMs (requires login)
+          // This doesn't prefill a friend request; we open the web client so the user can paste the copied username into "Add Friend".
+          try{
+            window.open('https://discord.com/channels/@me', '_blank', 'noopener');
+          }catch(e){ /* ignore */ }
+        }
+
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(username).then(()=>{
+            showToast('Pseudo copié dans le presse-papiers : ' + username);
+            // open Discord web after a small delay so user sees toast
+            setTimeout(openDiscordWeb, 500);
+          }).catch((err)=>{
+            // Fallback: prompt with the username selected so user can copy manually
+            showToast('Impossible de copier automatiquement — pseudo : ' + username);
+            try{ window.open('https://discord.com/channels/@me', '_blank', 'noopener'); }catch(e){}
+          });
+        }else{
+          // older browsers fallback
+          showToast('Copiez ce pseudo : ' + username);
+          try{ window.open('https://discord.com/channels/@me', '_blank', 'noopener'); }catch(e){}
+        }
+
+        // Try to open the Discord app via deep link as a courtesy (may be blocked in some browsers)
+        try{
+          const appUrl = 'discord://';
+          const iframe = document.createElement('iframe');
+          iframe.style.display='none';
+          iframe.src = appUrl;
+          document.body.appendChild(iframe);
+          setTimeout(()=>{ document.body.removeChild(iframe); }, 1500);
+        }catch(e){}
+      });
+    })();
+  </script>
+</body>
+</html>
